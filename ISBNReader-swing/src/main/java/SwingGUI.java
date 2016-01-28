@@ -15,7 +15,7 @@ import java.text.DateFormat;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
-public class GUI {
+public class SwingGUI {
     private JFrame frmManager;
     private JTextField textField;
     private JTextField setRunningNumber;
@@ -61,7 +61,7 @@ public class GUI {
     private JCheckBox checkBoxStudent;
     private JLabel lblLaufnummereigenerPreisverkuferstudenttitelautorverlagisbnlistenpreis;
 
-    public GUI() throws IOException {
+    public SwingGUI() throws IOException {
         this.bookRetriever = new BookRetriever();
         this.bookFileWriter = new BookFileWriter();
         this.runningNumber = "1";
@@ -81,7 +81,7 @@ public class GUI {
     }
 
     public static void main(final String[] args) throws IOException {
-        final GUI gui = new GUI();
+        final SwingGUI swingGui = new SwingGUI();
     }
 
     public String getDate() {
@@ -100,9 +100,9 @@ public class GUI {
             @Override
             public void actionPerformed(final ActionEvent arg0) {
                 try {
-                    if (GUI.this.textField.getText().length() == 10 || GUI.this.textField.getText().length() == 13) {
-                        GUI.this.requestISBN(GUI.this.textField.getText());
-                        GUI.this.textField.setText("");
+                    if (SwingGUI.this.textField.getText().length() == 10 || SwingGUI.this.textField.getText().length() == 13) {
+                        SwingGUI.this.requestISBN(SwingGUI.this.textField.getText());
+                        SwingGUI.this.textField.setText("");
                     }
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
@@ -116,16 +116,16 @@ public class GUI {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 try {
-                    if (GUI.this.textField.getText().length() == 10 || GUI.this.textField.getText().length() == 13) {
-                        GUI.this.requestISBN(GUI.this.textField.getText());
-                        GUI.this.textField.setText("");
+                    if (SwingGUI.this.textField.getText().length() == 10 || SwingGUI.this.textField.getText().length() == 13) {
+                        SwingGUI.this.requestISBN(SwingGUI.this.textField.getText());
+                        SwingGUI.this.textField.setText("");
                     }
                 } catch (UnknownHostException e2) {
                     e2.printStackTrace();
                 } catch (IOException e3) {
                     e3.printStackTrace();
                 }
-                GUI.this.textField.setText("");
+                SwingGUI.this.textField.setText("");
             }
         });
         this.frmManager.getContentPane().add(btnNewButton, "cell 2 0,growx,aligny top");
@@ -142,7 +142,7 @@ public class GUI {
         this.setRunningNumber.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent arg0) {
-                GUI.this.bookFileWriter.setRunningNumber(Integer.parseInt(GUI.this.setRunningNumber.getText()));
+                SwingGUI.this.bookFileWriter.setRunningNumber(Integer.parseInt(SwingGUI.this.setRunningNumber.getText()));
             }
         });
         this.setRunningNumber.setColumns(10);
@@ -199,7 +199,7 @@ public class GUI {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 try {
-                    GUI.this.writeToFile();
+                    SwingGUI.this.writeToFile();
                 } catch (IOException e2) {
                     e2.printStackTrace();
                 }
