@@ -23,10 +23,10 @@ public class SwingGUI {
     private JLabel lblAutor;
     private JLabel lblTitel;
     private JLabel lblVerlag;
-    private BookRetriever bookRetriever;
-    private HashMap<String, String> book;
-    private HashMap<String, String> book2;
-    private BookFileWriter bookFileWriter;
+    private InformationRetriever informationRetriever;
+    private Book book;
+    private Book book2;
+    private Persistor persistor;
     private String runningNumber;
     private JTextField textField_Titel;
     private JTextField textField_Verlag;
@@ -62,8 +62,8 @@ public class SwingGUI {
     private JLabel lblLaufnummereigenerPreisverkuferstudenttitelautorverlagisbnlistenpreis;
 
     public SwingGUI() throws IOException {
-        this.bookRetriever = new BookRetriever();
-        this.bookFileWriter = new BookFileWriter();
+        this.informationRetriever = new InformationRetriever();
+        this.persistor = new Persistor();
         this.runningNumber = "1";
         this.textAuthor = "";
         this.textVerlag = "";
@@ -74,8 +74,8 @@ public class SwingGUI {
         this.textStudent = "0";
         this.textDatei = "registeredBooks.csv";
         this.defimage = new ImageIcon("no_image_available.jpg", "");
-        this.book = new HashMap<String, String>();
-        this.book2 = new HashMap<String, String>();
+        this.book = new Book();
+        this.book2 = new Book();
         this.initialize();
         this.refresh();
     }
@@ -142,7 +142,7 @@ public class SwingGUI {
         this.setRunningNumber.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent arg0) {
-                SwingGUI.this.bookFileWriter.setRunningNumber(Integer.parseInt(SwingGUI.this.setRunningNumber.getText()));
+                //SwingGUI.this.persistor.setRunningNumber(Integer.parseInt(SwingGUI.this.setRunningNumber.getText()));
             }
         });
         this.setRunningNumber.setColumns(10);
@@ -227,12 +227,12 @@ public class SwingGUI {
     }
 
     public void displayBookData() throws IOException {
-        this.textAuthor = this.book.get("Author");
-        this.textTitel = this.book.get("Title");
-        this.textVerlag = this.book.get("Publisher");
-        this.textISBN10 = this.book.get("ISBN10");
-        this.textListenpreis = this.book.get("List Price");
-        final URL url = new URL(this.book.get("Cover"));
+        this.textAuthor = this.book.getAuthor();
+        this.textTitel = this.book.getTitle();
+        this.textVerlag = this.book.getPublisher();
+        this.textISBN10 = this.book.getIsbn10();
+        this.textListenpreis = this.book.getListPrice();
+        final URL url = new URL(this.book.getCover());
         final BufferedImage image = ImageIO.read(url);
         this.lblCover.setIcon(new ImageIcon(image));
         this.refresh();
@@ -254,34 +254,34 @@ public class SwingGUI {
     }
 
     public void requestISBN(final String isbn) throws IOException {
-        this.book = this.bookRetriever.retrieveBook(isbn);
+        this.book = this.informationRetriever.retrieveBook(isbn);
         this.textDatei = String.valueOf(this.textField_Dateiname.getText().split(".csv")[0]) + ".csv";
         this.displayBookData();
     }
 
     public void writeToFile() throws IOException {
         if (this.textField_Autor.getText() != "" || this.textField_Titel.getText() != "") {
-            this.book2 = new HashMap<String, String>();
-            this.book2.put("Author", this.textField_Autor.getText());
-            this.book2.put("Title", this.textField_Titel.getText());
-            this.book2.put("Publisher", this.textField_Verlag.getText());
-            this.book2.put("ISBN10", this.textField_ISBN10.getText());
-            this.book2.put("List Price", this.textField_Listenpreis.getText());
-            this.bookFileWriter.setSellingPrice(this.textField_Verkaufspreis.getText());
-            this.bookFileWriter.setRunningNumber(Integer.parseInt(this.setRunningNumber.getText()));
-            this.bookFileWriter.setSeller(this.textField_Verkäufer.getText());
+            this.book2 = new Book();
+            this.book2.setAuthor(this.textField_Autor.getText());
+            this.book2.setTitle(this.textField_Titel.getText());
+            this.book2.setPublisher(this.textField_Verlag.getText());
+            this.book2.setIsbn10(this.textField_ISBN10.getText());
+            this.book2.setListPrice(this.textField_Listenpreis.getText());
+            this.book2.setSellingPrice(this.textField_Verkaufspreis.getText());
+            this.book2.setRunningNumber(Integer.parseInt(this.setRunningNumber.getText()));
+            this.book2.setSeller(this.textField_Verkäufer.getText());
             final boolean isStudentSelected = this.checkBoxStudent.isSelected();
             /*if (selected) {
                 this.textStudent = "STUD";
             } else {
                 this.textStudent = "0";
             }*/
-            this.bookFileWriter.setIsStudent(isStudentSelected);
-            this.textPane.setText(String.valueOf(this.textPane.getText()) + this.bookFileWriter.convertBookToCSV(this.book2));
+            this.book2.setStudent(isStudentSelected);
+            this.textPane.setText(String.valueOf(this.textPane.getText()) + this.persistor.convertToCSV(this.book2));
             this.textDatei = String.valueOf(this.textField_Dateiname.getText().split(".csv")[0]) + ".csv";
-            this.bookFileWriter.setFilename(this.textField_Dateiname.getText());
-            this.bookFileWriter.writeBookAsCSV(this.book2);
-            this.runningNumber = new StringBuilder().append(this.bookFileWriter.getRunningNumber()).toString();
+            //this.persistor.setFilename(this.textField_Dateiname.getText());
+            this.persistor.writeCSV(this.book2, this.textField_Dateiname.getText());
+            this.runningNumber = String.valueOf(book2.getRunningNumber()+1);
             this.setRunningNumber.setText(this.runningNumber);
             this.setRunningNumber.repaint();
             this.clear();
@@ -289,8 +289,8 @@ public class SwingGUI {
     }
 
     public void clear() {
-        this.book.clear();
-        this.book2.clear();
+        //this.book.clear();
+        //this.book2.clear();
         this.textAuthor = "";
         this.textVerlag = "";
         this.textTitel = "";

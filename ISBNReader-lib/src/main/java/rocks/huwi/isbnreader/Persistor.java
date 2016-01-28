@@ -1,0 +1,50 @@
+package rocks.huwi.isbnreader;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class Persistor {
+    public String convertToCSV(Book book) {
+        return book.getRunningNumber() + ";"
+                + book.getSellingPrice() + ";"
+                + book.getSeller() + ";"
+                + book.getStudent() + ";"
+                + book.getTitle() + ";"
+                + book.getAuthor() + ";"
+                + book.getPublisher() + ";"
+                + book.getIsbn10() + ";"
+                + book.getIsbn13() + ";"
+                + book.getListPrice() + "\n";
+    }
+
+    private String getCsvHeader()
+    {
+        return "Laufnummer;"
+                +"Verkaufspreis;"
+                +"Verkäufer;"
+                +"istStudent;"
+                +"Titel;"
+                +"Autor;"
+                +"Verlag;"
+                +"ISBN10;"
+                +"ISBN13;"
+                +"Listenpreis\n";
+    }
+
+    public void writeCSV(Book book, String filename) throws IOException {
+        File file = new File(filename);
+        Boolean isFileExisting = file.exists();
+
+        final BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true));
+
+        if (isFileExisting) {
+            writer.write(this.getCsvHeader());
+        }
+
+        writer.write(this.convertToCSV(book));
+        writer.close();
+    }
+
+}
