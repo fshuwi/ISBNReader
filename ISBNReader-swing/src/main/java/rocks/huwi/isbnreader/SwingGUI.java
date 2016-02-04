@@ -13,7 +13,6 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 
 public class SwingGUI {
     private JFrame frmManager;
@@ -142,7 +141,7 @@ public class SwingGUI {
         this.setRunningNumber.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent arg0) {
-                //SwingGUI.this.persistor.setRunningNumber(Integer.parseInt(SwingGUI.this.setRunningNumber.getText()));
+                //rocks.huwi.isbnreader.SwingGUI.this.persistor.setRunningNumber(Integer.parseInt(rocks.huwi.isbnreader.SwingGUI.this.setRunningNumber.getText()));
             }
         });
         this.setRunningNumber.setColumns(10);
@@ -232,7 +231,7 @@ public class SwingGUI {
         this.textVerlag = this.book.getPublisher();
         this.textISBN10 = this.book.getIsbn10();
         this.textListenpreis = this.book.getListPrice();
-        final URL url = new URL(this.book.getCover());
+        final URL url = new URL(this.book.getCoverURL());
         final BufferedImage image = ImageIO.read(url);
         this.lblCover.setIcon(new ImageIcon(image));
         this.refresh();
@@ -281,7 +280,7 @@ public class SwingGUI {
             this.textDatei = String.valueOf(this.textField_Dateiname.getText().split(".csv")[0]) + ".csv";
             //this.persistor.setFilename(this.textField_Dateiname.getText());
             this.persistor.writeCSV(this.book2, this.textField_Dateiname.getText());
-            this.runningNumber = String.valueOf(book2.getRunningNumber()+1);
+            this.runningNumber = String.valueOf(book2.getRunningNumber() + 1);
             this.setRunningNumber.setText(this.runningNumber);
             this.setRunningNumber.repaint();
             this.clear();

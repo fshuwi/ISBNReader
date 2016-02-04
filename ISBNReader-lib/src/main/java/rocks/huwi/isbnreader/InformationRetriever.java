@@ -1,5 +1,8 @@
 package rocks.huwi.isbnreader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,7 +11,10 @@ import java.net.URLConnection;
 
 public class InformationRetriever {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     public Book retrieveBook(String isbn) throws IOException {
+        logger.info("Retrieving Information for ISBN {}", isbn);
         Book book = new Book();
 
         URL url = new URL("http://www.openisbn.org/download/" + isbn + ".txt");
@@ -17,7 +23,7 @@ public class InformationRetriever {
 
         String inputLine;
         while ((inputLine = reader.readLine()) != null) {
-            String[] splitKeyValues = inputLine.split(": ");
+            String[] splitKeyValues = inputLine.split(": ", 2);
             String key = splitKeyValues[0];
             String value = splitKeyValues.length >= 2 ? splitKeyValues[1] : "";
 
@@ -35,7 +41,7 @@ public class InformationRetriever {
                     break;
 
                 case "Cover":
-                    book.setCover(value);
+                    book.setCoverURL(value);
                     break;
 
                 case "Title":

@@ -1,107 +1,168 @@
 package rocks.huwi.isbnreader;
 
+import javafx.beans.property.*;
+
 public class Book {
 
-    private int runningNumber;
+    private IntegerProperty runningNumber = new SimpleIntegerProperty();
+    private StringProperty seller = new SimpleStringProperty();
+    private BooleanProperty isStudent = new SimpleBooleanProperty();
+    private StringProperty author = new SimpleStringProperty();
+    private StringProperty title = new SimpleStringProperty();
+    private StringProperty publisher = new SimpleStringProperty();
+    private StringProperty isbn10 = new SimpleStringProperty();
+    private StringProperty isbn13 = new SimpleStringProperty();
+    private StringProperty coverURL = new SimpleStringProperty();
+    private StringProperty sellingPrice = new SimpleStringProperty();
+    private StringProperty listPrice = new SimpleStringProperty();
 
-    private String seller;
-    private Boolean isStudent;
-
-    private String author;
-    private String title;
-    private String publisher;
-    private String isbn10;
-    private String isbn13;
-    private String cover;
-
-    private String sellingPrice;
-    private String listPrice;
-
-    public int getRunningNumber() {
+    public IntegerProperty RunningNumberProperty() {
         return runningNumber;
     }
 
-    public void setRunningNumber(int runningNumber) {
-        this.runningNumber = runningNumber;
+    @Override
+    public String toString() {
+        return "Book{" +
+                "runningNumber=" + runningNumber +
+                ", seller=" + seller +
+                ", isStudent=" + isStudent +
+                ", author=" + author +
+                ", title=" + title +
+                ", publisher=" + publisher +
+                ", isbn10=" + isbn10 +
+                ", isbn13=" + isbn13 +
+                ", coverURL=" + coverURL +
+                ", sellingPrice=" + sellingPrice +
+                ", listPrice=" + listPrice +
+                '}';
     }
 
-    public String getSeller() {
+    public StringProperty SellerProperty() {
         return seller;
     }
 
-    public void setSeller(String seller) {
-        this.seller = seller;
-    }
-
-    public Boolean getStudent() {
+    public BooleanProperty IsStudentProperty() {
         return isStudent;
     }
 
-    public void setStudent(Boolean student) {
-        isStudent = student;
-    }
-
-    public String getAuthor() {
+    public StringProperty AuthorProperty() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getTitle() {
+    public StringProperty TitleProperty() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getPublisher() {
+    public StringProperty PublisherProperty() {
         return publisher;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    public String getIsbn10() {
+    public StringProperty Isbn10Property() {
         return isbn10;
     }
 
-    public void setIsbn10(String isbn10) {
-        this.isbn10 = isbn10;
-    }
-
-    public String getIsbn13() {
+    public StringProperty Isbn13Property() {
         return isbn13;
     }
 
-    public void setIsbn13(String isbn13) {
-        this.isbn13 = isbn13;
+    public StringProperty CoverURLProperty() {
+        return coverURL;
     }
 
-    public String getSellingPrice() {
+    public StringProperty SellingPriceProperty() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(String sellingPrice) {
-        this.sellingPrice = sellingPrice;
-    }
-
-    public String getListPrice() {
+    public StringProperty ListPriceProperty() {
         return listPrice;
     }
 
+
+    public int getRunningNumber() {
+        return runningNumber.get();
+    }
+
+    public void setRunningNumber(int runningNumber) {
+        this.runningNumber.set(runningNumber);
+    }
+
+    public String getSeller() {
+        return seller.get();
+    }
+
+    public void setSeller(String seller) {
+        this.seller.set(seller);
+    }
+
+    public Boolean getStudent() {
+        return isStudent.get();
+    }
+
+    public void setStudent(Boolean student) {
+        isStudent.set(student);
+    }
+
+    public String getAuthor() {
+        return author.get();
+    }
+
+    public void setAuthor(String author) {
+        this.author.set(author);
+    }
+
+    public String getTitle() {
+        return title.get();
+    }
+
+    public void setTitle(String title) {
+        this.title.set(title);
+    }
+
+    public String getPublisher() {
+        return publisher.get();
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher.set(publisher);
+    }
+
+    public String getIsbn10() {
+        return isbn10.get();
+    }
+
+    public void setIsbn10(String isbn10) {
+        this.isbn10.set(isbn10);
+    }
+
+    public String getIsbn13() {
+        return isbn13.get();
+    }
+
+    public void setIsbn13(String isbn13) {
+        this.isbn13.set(isbn13);
+    }
+
+    public String getSellingPrice() {
+        return sellingPrice.get();
+    }
+
+    public void setSellingPrice(String sellingPrice) {
+        this.sellingPrice.set(sellingPrice);
+    }
+
+    public String getListPrice() {
+        return listPrice.get();
+    }
+
     public void setListPrice(String listPrice) {
-        this.listPrice = listPrice;
+        this.listPrice.set(listPrice);
     }
 
-    public String getCover() {
-        return cover;
+    public String getCoverURL() {
+        return coverURL.get();
     }
 
-    public void setCover(String cover) {
-        this.cover = cover;
+    public void setCoverURL(String coverURL) {
+        this.coverURL.set(coverURL);
     }
 }
