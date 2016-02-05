@@ -41,7 +41,8 @@ public class InformationRetriever {
                     break;
 
                 case "Cover":
-                    book.setCoverURL(value);
+                    String coverUrl = value.trim();
+                    book.setCoverURL(coverUrl);
                     break;
 
                 case "Title":

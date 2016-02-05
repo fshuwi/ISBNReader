@@ -1,5 +1,6 @@
 package rocks.huwi.isbnreader;
 
+import javafx.beans.binding.ObjectBinding;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
@@ -9,6 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,9 +50,14 @@ public class Controller implements Initializable {
     private TextField textfield_sellingprice;
     @FXML
     private ProgressBar progressbar_retrievingInformation;
+    @FXML
+    private ImageView imageview_cover;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        imageview_cover.setImage(new Image("http://www.designsbybethann.com/pictures/Flowers/none%20flowers.jpg"));
+        //imageview_cover.imageProperty().get().
+
         this.bindBook(book);
         //SpinnerValueFactory.IntegerSpinnerValueFactory isvf = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,999999);
         //spinner_runningnumber.setValueFactory(isvf);
@@ -64,6 +72,7 @@ public class Controller implements Initializable {
         textfield_seller.textProperty().unbindBidirectional(book.SellerProperty());
         textfield_listprice.textProperty().unbindBidirectional(book.ListPriceProperty());
         textfield_sellingprice.textProperty().unbindBidirectional(book.SellingPriceProperty());
+        imageview_cover.imageProperty().unbind();
     }
 
     private void bindBook(Book book) {
@@ -78,6 +87,24 @@ public class Controller implements Initializable {
         textfield_seller.textProperty().bindBidirectional(book.SellerProperty());
         textfield_listprice.textProperty().bindBidirectional(book.ListPriceProperty());
         textfield_sellingprice.textProperty().bindBidirectional(book.SellingPriceProperty());
+
+        ObjectBinding<Image> coverImageBinding = new ObjectBinding<Image>() {
+            { bind(book.CoverURLProperty()); }
+            protected Image computeValue() {
+                logger.info("computing binding for cover URL");
+                if (book.CoverURLProperty().get() == null)
+                {
+                    return null;
+                }
+
+                String coverURL = book.CoverURLProperty().get();
+                logger.info("Setting image '{}'",coverURL);
+                Image newImage = new Image(coverURL);
+                return newImage;
+            }
+        };
+
+        imageview_cover.imageProperty().bind(coverImageBinding);
     }
 
     @FXML
