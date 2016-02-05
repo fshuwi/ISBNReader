@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -119,8 +120,12 @@ public class Controller implements Initializable {
                 try {
                     book = informationRetriever.retrieveBook(isbn);
                     book.setSeller(lastBook.getSeller());
+                } catch (FileNotFoundException e){
+                    logger.error("Book with given ISBN {} not found", isbn, e);
+                    book = null;
                 } catch (IOException e) {
                     logger.error("Error while retrieving book information", e);
+                    book = null;
                 }
                 updateProgress(1.0, 1.0);
 
@@ -136,14 +141,22 @@ public class Controller implements Initializable {
             public void handle(WorkerStateEvent t) {
                 Book book = (Book)task.getValue();
 
-                unbindBook(lastBook);
-                bindBook(book);
+                if (book != null) {
+                    unbindBook(lastBook);
+                    bindBook(book);
 
-                if (textfield_seller.textProperty().get() == null || textfield_seller.textProperty().get().isEmpty())
-                {
-                    textfield_seller.requestFocus();
+                    if (textfield_seller.textProperty().get() == null || textfield_seller.textProperty().get().isEmpty()) {
+                        textfield_seller.requestFocus();
+                    } else {
+                        textfield_sellingprice.requestFocus();
+                    }
                 }else{
-                    textfield_sellingprice.requestFocus();
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error :-(");
+                    alert.setHeaderText("Retrieving book information failed.");
+                    alert.setContentText("The ISBN might be incorrect.");
+
+                    alert.showAndWait();
                 }
             }
         });
