@@ -1,5 +1,6 @@
 package rocks.huwi.isbnreader;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +42,7 @@ public class InformationRetriever {
                     break;
 
                 case "Cover":
+                    // openisbn.com places spaces around the URL
                     String coverUrl = value.trim();
                     book.setCoverURL(coverUrl);
                     break;
@@ -54,7 +56,8 @@ public class InformationRetriever {
                     break;
 
                 case "Author":
-                    book.setAuthor(value);
+                    // openisbn.com ends the authors attribute with ", "
+                    book.setAuthor(StringUtils.stripEnd(value, ", "));
                     break;
 
                 default:
