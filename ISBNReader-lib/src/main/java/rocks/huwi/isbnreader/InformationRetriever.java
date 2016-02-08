@@ -16,19 +16,26 @@ public class InformationRetriever {
 
     /**
      * openisbn.com seems to need http://www.openisbn.org/isbn/XYZ access first before retrieving the download URL.
-     * @param isbn
+     * This method does this.
+     * @param isbn ISBN of the book to access
      */
     private void dummyRead(String isbn) {
-        URL url = null;
+        String urlString = "http://www.openisbn.org/isbn/" + isbn + "/";
         try {
-            url = new URL("http://www.openisbn.org/isbn/" + isbn + "/");
+            URL url = new URL(urlString);
             URLConnection urlConnection = url.openConnection();
             urlConnection.getInputStream();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error in accessing {}", urlString, e);
         }
     }
 
+    /**
+     * Retrieve information of an book with given ISBN
+     * @param isbn ISBN of the book to receive information for
+     * @return Book with information
+     * @throws IOException
+     */
     public Book retrieveBook(String isbn) throws IOException {
         logger.info("Retrieving Information for ISBN {}", isbn);
         Book book = new Book();
@@ -36,8 +43,8 @@ public class InformationRetriever {
         logger.info("Access dummy URL for generation for ISBN {}", isbn);
         this.dummyRead(isbn);
 
-        logger.info("Download real Information for ISBN {}", isbn);
         URL url = new URL("http://www.openisbn.org/download/" + isbn + ".txt");
+        logger.info("Download real Information for ISBN {} from {}", isbn, url.toString());
         URLConnection urlConnection = url.openConnection();
         BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
 
