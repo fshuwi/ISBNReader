@@ -17,6 +17,7 @@ public class InformationRetriever {
     /**
      * openisbn.com seems to need http://www.openisbn.org/isbn/XYZ access first before retrieving the download URL.
      * This method does this.
+     *
      * @param isbn ISBN of the book to access
      */
     private void dummyRead(String isbn) {
@@ -32,6 +33,7 @@ public class InformationRetriever {
 
     /**
      * Retrieve information of an book with given ISBN
+     *
      * @param isbn ISBN of the book to receive information for
      * @return Book with information
      * @throws IOException
