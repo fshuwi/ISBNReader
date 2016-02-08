@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -53,6 +54,8 @@ public class Controller implements Initializable {
     private ProgressBar progressbar_retrievingInformation;
     @FXML
     private ImageView imageview_cover;
+    @FXML
+    private CheckBox checkbox_isstudent;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -73,6 +76,7 @@ public class Controller implements Initializable {
         textfield_seller.textProperty().unbindBidirectional(book.SellerProperty());
         textfield_listprice.textProperty().unbindBidirectional(book.ListPriceProperty());
         textfield_sellingprice.textProperty().unbindBidirectional(book.SellingPriceProperty());
+        checkbox_isstudent.selectedProperty().unbindBidirectional(book.IsStudentProperty());
         imageview_cover.imageProperty().unbind();
     }
 
@@ -88,6 +92,7 @@ public class Controller implements Initializable {
         textfield_seller.textProperty().bindBidirectional(book.SellerProperty());
         textfield_listprice.textProperty().bindBidirectional(book.ListPriceProperty());
         textfield_sellingprice.textProperty().bindBidirectional(book.SellingPriceProperty());
+        checkbox_isstudent.selectedProperty().bindBidirectional(book.IsStudentProperty());
 
         ObjectBinding<Image> coverImageBinding = new ObjectBinding<Image>() {
             { bind(book.CoverURLProperty()); }
@@ -170,6 +175,7 @@ public class Controller implements Initializable {
             Book lastBook = this.book;
             this.book = new Book();
             this.book.setSeller(lastBook.getSeller());
+            this.book.setStudent(lastBook.getStudent());
 
             unbindBook(lastBook);
             bindBook(book);
