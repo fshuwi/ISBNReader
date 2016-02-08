@@ -14,10 +14,29 @@ public class InformationRetriever {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * openisbn.com seems to need http://www.openisbn.org/isbn/XYZ access first before retrieving the download URL.
+     * @param isbn
+     */
+    private void dummyRead(String isbn) {
+        URL url = null;
+        try {
+            url = new URL("http://www.openisbn.org/isbn/" + isbn + "/");
+            URLConnection urlConnection = url.openConnection();
+            urlConnection.getInputStream();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public Book retrieveBook(String isbn) throws IOException {
         logger.info("Retrieving Information for ISBN {}", isbn);
         Book book = new Book();
 
+        logger.info("Access dummy URL for generation for ISBN {}", isbn);
+        this.dummyRead(isbn);
+
+        logger.info("Download real Information for ISBN {}", isbn);
         URL url = new URL("http://www.openisbn.org/download/" + isbn + ".txt");
         URLConnection urlConnection = url.openConnection();
         BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
@@ -30,29 +49,28 @@ public class InformationRetriever {
 
             switch (key) {
                 case "ISBN10":
-                    book.setIsbn10(value);
+                    book.setIsbn10(value.trim());
                     break;
 
                 case "ISBN13":
-                    book.setIsbn13(value);
+                    book.setIsbn13(value.trim());
                     break;
 
                 case "Publisher":
-                    book.setPublisher(value);
+                    book.setPublisher(value.trim());
                     break;
 
                 case "Cover":
                     // openisbn.com places spaces around the URL
-                    String coverUrl = value.trim();
-                    book.setCoverURL(coverUrl);
+                    book.setCoverURL(value.trim());
                     break;
 
                 case "Title":
-                    book.setTitle(value);
+                    book.setTitle(value.trim());
                     break;
 
                 case "List Price":
-                    book.setListPrice(value);
+                    book.setListPrice(value.trim());
                     break;
 
                 case "Author":

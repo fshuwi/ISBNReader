@@ -12,16 +12,30 @@ public class Persistor {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public String convertToCSV(Book book) {
+
         return book.getRunningNumber() + ";"
-                + book.getSellingPrice() + ";"
-                + book.getSeller() + ";"
-                + book.getStudent() + ";"
-                + book.getTitle() + ";"
-                + book.getAuthor() + ";"
-                + book.getPublisher() + ";"
-                + book.getIsbn10() + ";"
-                + book.getIsbn13() + ";"
-                + book.getListPrice() + "\n";
+                + (book.getSellingPrice() != null ? book.getSellingPrice() : "") + ";"
+                + (book.getSeller() != null ? book.getSellingPrice() : "") + ";"
+                + (book.getStudent() != null ? book.getSellingPrice() : "") + ";"
+                + (book.getTitle() != null ? book.getSellingPrice() : "") + ";"
+                + (book.getAuthor() != null ? book.getSellingPrice() : "") + ";"
+                + (book.getPublisher() != null ? book.getSellingPrice() : "") + ";"
+                + (book.getIsbn10() != null ? book.getSellingPrice() : "") + ";"
+                + (book.getIsbn13() != null ? book.getSellingPrice() : "") + ";"
+                + (book.getListPrice() != null ? book.getSellingPrice() : "")
+                + "\n";
+
+//        return book.getRunningNumber() + ";"
+//                + book.getSellingPrice() != null ? book.getSellingPrice() : "" + ";"
+//                + book.getSeller() != null ? book.getSellingPrice() : "" + ";"
+//                + book.getStudent() != null ? book.getSellingPrice() : "" + ";"
+//                + book.getTitle() != null ? book.getSellingPrice() : "" + ";"
+//                + book.getAuthor() != null ? book.getSellingPrice() : "" + ";"
+//                + book.getPublisher() != null ? book.getSellingPrice() : "" + ";"
+//                + book.getIsbn10() != null ? book.getSellingPrice() : "" + ";"
+//                + book.getIsbn13() != null ? book.getSellingPrice() : "" + ";"
+//                + book.getListPrice() != null ? book.getSellingPrice() : ""
+//                + "\n";
     }
 
     private String getCsvHeader() {

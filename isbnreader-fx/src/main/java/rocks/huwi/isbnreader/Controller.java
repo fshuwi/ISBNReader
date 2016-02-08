@@ -26,9 +26,8 @@ public class Controller implements Initializable {
     private Persistor persistor = new Persistor();
     private Book book = new Book();
 
-    @FXML private Spinner spinner_runningnumber;
-    //@FXML
-    //private TextField textfield_runningnumber;
+    @FXML
+    private Spinner spinner_runningnumber;
     @FXML
     private TextField textfield_isbn;
     @FXML
@@ -53,15 +52,18 @@ public class Controller implements Initializable {
     private ImageView imageview_cover;
     @FXML
     private CheckBox checkbox_isstudent;
+    @FXML
+    private Button button_savebook;
+    @FXML
+    private Button button_retrieveinformation;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        imageview_cover.setImage(new Image("http://www.designsbybethann.com/pictures/Flowers/none%20flowers.jpg"));
-        //imageview_cover.imageProperty().get().
+        SpinnerValueFactory.IntegerSpinnerValueFactory integerSpinnerValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 999999);
+        spinner_runningnumber.setValueFactory(integerSpinnerValueFactory);
 
-
-        SpinnerValueFactory.IntegerSpinnerValueFactory isvf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,999999);
-        spinner_runningnumber.setValueFactory(isvf);
+        button_savebook.defaultButtonProperty().bind(button_savebook.focusedProperty());
+        button_retrieveinformation.defaultButtonProperty().bind(button_retrieveinformation.focusedProperty());
 
         book.setRunningNumber(RunningNumberGenerator.getNextRunningNumber());
         this.bindBook(book);
@@ -82,9 +84,6 @@ public class Controller implements Initializable {
     }
 
     private void bindBook(Book book) {
-        //spinner_runningnumber. .bindBidirectional(book.RunningNumberProperty());
-        //spinner_runningnumber.valueProperty().
-        //textfield_isbn.textProperty().bind(book.RunningNumberProperty());
         textfield_isbn10.textProperty().bindBidirectional(book.Isbn10Property());
         textfield_isbn13.textProperty().bindBidirectional(book.Isbn13Property());
         textfield_author.textProperty().bindBidirectional(book.AuthorProperty());
@@ -97,16 +96,18 @@ public class Controller implements Initializable {
         spinner_runningnumber.getValueFactory().valueProperty().bindBidirectional(book.RunningNumberProperty());
 
         ObjectBinding<Image> coverImageBinding = new ObjectBinding<Image>() {
-            { bind(book.CoverURLProperty()); }
+            {
+                bind(book.CoverURLProperty());
+            }
+
             protected Image computeValue() {
                 logger.info("computing binding for cover URL");
-                if (book.CoverURLProperty().get() == null)
-                {
+                if (book.CoverURLProperty().get() == null) {
                     return null;
                 }
 
                 String coverURL = book.CoverURLProperty().get();
-                logger.info("Setting image '{}'",coverURL);
+                logger.info("Setting image '{}'", coverURL);
                 Image newImage = new Image(coverURL);
                 return newImage;
             }
@@ -115,8 +116,7 @@ public class Controller implements Initializable {
         imageview_cover.imageProperty().bind(coverImageBinding);
     }
 
-    private void transferValues(Book fromBook, Book toBook)
-    {
+    private void transferValues(Book fromBook, Book toBook) {
         toBook.setSeller(fromBook.getSeller());
         toBook.setStudent(fromBook.getStudent());
         toBook.setRunningNumber(fromBook.getRunningNumber());
@@ -128,14 +128,15 @@ public class Controller implements Initializable {
         String isbn = textfield_isbn.getText();
 
         Task task = new Task<Book>() {
-            @Override public Book call() {
+            @Override
+            public Book call() {
 
                 updateProgress(0.5, 1.0);
                 try {
                     book = informationRetriever.retrieveBook(isbn);
 
                     transferValues(lastBook, book);
-                } catch (FileNotFoundException e){
+                } catch (FileNotFoundException e) {
                     logger.error("Book with given ISBN {} not found (or some problem with the server)", isbn, e);
                     book = null;
                 } catch (IOException e) {
@@ -154,7 +155,7 @@ public class Controller implements Initializable {
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent t) {
-                Book book = (Book)task.getValue();
+                Book book = (Book) task.getValue();
 
                 if (book != null) {
                     unbindBook(lastBook);
@@ -165,7 +166,7 @@ public class Controller implements Initializable {
                     } else {
                         textfield_sellingprice.requestFocus();
                     }
-                }else{
+                } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error :-(");
                     alert.setHeaderText("Retrieving book information failed.");

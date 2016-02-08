@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 public class RunningNumberGenerator {
     private static final Logger logger = LoggerFactory.getLogger(RunningNumberGenerator.class);
@@ -16,14 +15,12 @@ public class RunningNumberGenerator {
             int num = Integer.parseInt(p);
 
             return num;
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             return -1;
         }
     };
 
-    public static int getNextRunningNumber()
-    {
+    public static int getNextRunningNumber() {
         try {
             InputStream is = new FileInputStream(new File("books.csv"));
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -41,12 +38,10 @@ public class RunningNumberGenerator {
 
             if (nextRunningNumber >= 1) {
                 return nextRunningNumber;
-            }else{
+            } else {
                 return 1;
             }
-        }
-        catch(FileNotFoundException ex)
-        {
+        } catch (FileNotFoundException ex) {
             logger.info("File not found");
             return 1;
         }
