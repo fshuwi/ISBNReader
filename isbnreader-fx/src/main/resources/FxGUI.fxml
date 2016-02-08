@@ -55,9 +55,9 @@
         <TextField id="textfield_isbn" fx:id="textfield_isbn" onAction="#retrieveInformation" GridPane.columnIndex="1"/>
         <Button id="button_retrieveInformation" mnemonicParsing="false" onAction="#retrieveInformation"
                 text="Informationen abrufen" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1"/>
-        <!-- <Spinner id="spinner_runningnumber" fx:id="spinner_runningnumber" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4" /> -->
-        <TextField id="textfield_runningnumber" fx:id="textfield_runningnumber" GridPane.columnIndex="1"
-                   GridPane.rowIndex="4"/>
+        <Spinner id="spinner_runningnumber" fx:id="spinner_runningnumber" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <!-- <TextField id="textfield_runningnumber" fx:id="textfield_runningnumber" GridPane.columnIndex="1"
+                   GridPane.rowIndex="4"/> -->
         <TextField id="textfield_title" fx:id="textfield_title" GridPane.columnIndex="1" GridPane.columnSpan="2"
                    GridPane.rowIndex="5"/>
         <TextField id="textfield_author" fx:id="textfield_author" GridPane.columnIndex="1" GridPane.rowIndex="6"/>

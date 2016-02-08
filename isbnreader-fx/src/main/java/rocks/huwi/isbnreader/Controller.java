@@ -7,10 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.slf4j.Logger;
@@ -29,9 +26,9 @@ public class Controller implements Initializable {
     private Persistor persistor = new Persistor();
     private Book book = new Book();
 
-    //@FXML private Spinner spinner_runningnumber;
-    @FXML
-    private TextField textfield_runningnumber;
+    @FXML private Spinner spinner_runningnumber;
+    //@FXML
+    //private TextField textfield_runningnumber;
     @FXML
     private TextField textfield_isbn;
     @FXML
@@ -62,9 +59,12 @@ public class Controller implements Initializable {
         imageview_cover.setImage(new Image("http://www.designsbybethann.com/pictures/Flowers/none%20flowers.jpg"));
         //imageview_cover.imageProperty().get().
 
+
+        SpinnerValueFactory.IntegerSpinnerValueFactory isvf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,999999);
+        spinner_runningnumber.setValueFactory(isvf);
+
+        book.setRunningNumber(RunningNumberGenerator.getNextRunningNumber());
         this.bindBook(book);
-        //SpinnerValueFactory.IntegerSpinnerValueFactory isvf = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,999999);
-        //spinner_runningnumber.setValueFactory(isvf);
     }
 
     private void unbindBook(Book book) {
@@ -77,6 +77,7 @@ public class Controller implements Initializable {
         textfield_listprice.textProperty().unbindBidirectional(book.ListPriceProperty());
         textfield_sellingprice.textProperty().unbindBidirectional(book.SellingPriceProperty());
         checkbox_isstudent.selectedProperty().unbindBidirectional(book.IsStudentProperty());
+        spinner_runningnumber.getValueFactory().valueProperty().unbindBidirectional(book.RunningNumberProperty());
         imageview_cover.imageProperty().unbind();
     }
 
@@ -93,6 +94,7 @@ public class Controller implements Initializable {
         textfield_listprice.textProperty().bindBidirectional(book.ListPriceProperty());
         textfield_sellingprice.textProperty().bindBidirectional(book.SellingPriceProperty());
         checkbox_isstudent.selectedProperty().bindBidirectional(book.IsStudentProperty());
+        spinner_runningnumber.getValueFactory().valueProperty().bindBidirectional(book.RunningNumberProperty());
 
         ObjectBinding<Image> coverImageBinding = new ObjectBinding<Image>() {
             { bind(book.CoverURLProperty()); }
@@ -113,6 +115,13 @@ public class Controller implements Initializable {
         imageview_cover.imageProperty().bind(coverImageBinding);
     }
 
+    private void transferValues(Book fromBook, Book toBook)
+    {
+        toBook.setSeller(fromBook.getSeller());
+        toBook.setStudent(fromBook.getStudent());
+        toBook.setRunningNumber(fromBook.getRunningNumber());
+    }
+
     @FXML
     protected void retrieveInformation(ActionEvent event) {
         Book lastBook = book;
@@ -124,9 +133,10 @@ public class Controller implements Initializable {
                 updateProgress(0.5, 1.0);
                 try {
                     book = informationRetriever.retrieveBook(isbn);
-                    book.setSeller(lastBook.getSeller());
+
+                    transferValues(lastBook, book);
                 } catch (FileNotFoundException e){
-                    logger.error("Book with given ISBN {} not found", isbn, e);
+                    logger.error("Book with given ISBN {} not found (or some problem with the server)", isbn, e);
                     book = null;
                 } catch (IOException e) {
                     logger.error("Error while retrieving book information", e);
@@ -159,7 +169,7 @@ public class Controller implements Initializable {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error :-(");
                     alert.setHeaderText("Retrieving book information failed.");
-                    alert.setContentText("The ISBN might be incorrect.");
+                    alert.setContentText("The ISBN might be incorrect (or some problem with the server).");
 
                     alert.showAndWait();
                 }
@@ -169,13 +179,14 @@ public class Controller implements Initializable {
 
     @FXML
     protected void saveBook(ActionEvent event) {
+        logger.info(this.spinner_runningnumber.getValueFactory().valueProperty().get().toString());
         try {
             this.persistor.writeCSV(this.book, "books.csv");
 
             Book lastBook = this.book;
             this.book = new Book();
-            this.book.setSeller(lastBook.getSeller());
-            this.book.setStudent(lastBook.getStudent());
+            transferValues(lastBook, book);
+            this.book.setRunningNumber(RunningNumberGenerator.getNextRunningNumber());
 
             unbindBook(lastBook);
             bindBook(book);

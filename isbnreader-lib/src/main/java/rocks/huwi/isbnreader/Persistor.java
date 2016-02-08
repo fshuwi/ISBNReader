@@ -38,6 +38,7 @@ public class Persistor {
     }
 
     public void writeCSV(Book book, String filename) throws IOException {
+        logger.info("Saving book {}", book);
         logger.info("Saving book to {}", filename);
 
         File file = new File(filename);
