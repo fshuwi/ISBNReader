@@ -15,14 +15,14 @@ public class Persistor {
 
         return book.getRunningNumber() + ";"
                 + (book.getSellingPrice() != null ? book.getSellingPrice() : "") + ";"
-                + (book.getSeller() != null ? book.getSellingPrice() : "") + ";"
-                + (book.getStudent() != null ? book.getSellingPrice() : "") + ";"
-                + (book.getTitle() != null ? book.getSellingPrice() : "") + ";"
-                + (book.getAuthor() != null ? book.getSellingPrice() : "") + ";"
-                + (book.getPublisher() != null ? book.getSellingPrice() : "") + ";"
-                + (book.getIsbn10() != null ? book.getSellingPrice() : "") + ";"
-                + (book.getIsbn13() != null ? book.getSellingPrice() : "") + ";"
-                + (book.getListPrice() != null ? book.getSellingPrice() : "")
+                + (book.getSeller() != null ? book.getSeller() : "") + ";"
+                + (book.getStudent() != null ? book.getStudent() : "") + ";"
+                + (book.getTitle() != null ? book.getTitle() : "") + ";"
+                + (book.getAuthor() != null ? book.getAuthor() : "") + ";"
+                + (book.getPublisher() != null ? book.getPublisher() : "") + ";"
+                + (book.getIsbn10() != null ? book.getIsbn10() : "") + ";"
+                + (book.getIsbn13() != null ? book.getIsbn13() : "") + ";"
+                + (book.getListPrice() != null ? book.getListPrice() : "")
                 + "\n";
 
 //        return book.getRunningNumber() + ";"
