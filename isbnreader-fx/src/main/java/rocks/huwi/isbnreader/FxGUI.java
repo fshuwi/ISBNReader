@@ -17,7 +17,7 @@ public class FxGUI extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/FxGUI.fxml"));
-        primaryStage.setTitle("ISBN Reader 2.1 FX");
+        primaryStage.setTitle("ISBN Reader");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

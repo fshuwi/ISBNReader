@@ -9,8 +9,11 @@ import java.util.function.Function;
 public class RunningNumberGenerator {
     private static final Logger logger = LoggerFactory.getLogger(RunningNumberGenerator.class);
 
-    public static Function<String, Integer> extractRunningNumber = (line) -> {
-        String p = line.split(";")[0];
+    /**
+     * extract the running number from a CSV line
+     */
+    private static Function<String, Integer> extractRunningNumber = (line) -> {
+        String p = line.split(";")[0].trim();
         try {
             int num = Integer.parseInt(p);
 
@@ -20,6 +23,9 @@ public class RunningNumberGenerator {
         }
     };
 
+    /**
+     * @return get the next running number for a book
+     */
     public static int getNextRunningNumber() {
         try {
             InputStream is = new FileInputStream(new File("books.csv"));
@@ -42,7 +48,7 @@ public class RunningNumberGenerator {
                 return 1;
             }
         } catch (FileNotFoundException ex) {
-            logger.info("File not found");
+            logger.info("File not found, using 1 as next running number.");
             return 1;
         }
     }

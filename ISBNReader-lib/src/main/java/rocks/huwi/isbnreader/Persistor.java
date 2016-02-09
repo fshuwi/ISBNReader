@@ -24,18 +24,6 @@ public class Persistor {
                 + (book.getIsbn13() != null ? book.getIsbn13() : "") + ";"
                 + (book.getListPrice() != null ? book.getListPrice() : "")
                 + "\n";
-
-//        return book.getRunningNumber() + ";"
-//                + book.getSellingPrice() != null ? book.getSellingPrice() : "" + ";"
-//                + book.getSeller() != null ? book.getSellingPrice() : "" + ";"
-//                + book.getStudent() != null ? book.getSellingPrice() : "" + ";"
-//                + book.getTitle() != null ? book.getSellingPrice() : "" + ";"
-//                + book.getAuthor() != null ? book.getSellingPrice() : "" + ";"
-//                + book.getPublisher() != null ? book.getSellingPrice() : "" + ";"
-//                + book.getIsbn10() != null ? book.getSellingPrice() : "" + ";"
-//                + book.getIsbn13() != null ? book.getSellingPrice() : "" + ";"
-//                + book.getListPrice() != null ? book.getSellingPrice() : ""
-//                + "\n";
     }
 
     private String getCsvHeader() {
@@ -52,8 +40,7 @@ public class Persistor {
     }
 
     public void writeCSV(Book book, String filename) throws IOException {
-        logger.info("Saving book {}", book);
-        logger.info("Saving book to {}", filename);
+        logger.info("Saving book {} to {}", book, filename);
 
         File file = new File(filename);
         Boolean isFileExisting = file.exists();
