@@ -21,7 +21,7 @@ public class InformationRetriever {
      * @param isbn ISBN of the book to access
      */
     private void dummyRead(String isbn) {
-        String urlString = "http://www.openisbn.org/isbn/" + isbn + "/";
+        String urlString = "http://www.openisbn.com/isbn/" + isbn + "/";
         try {
             URL url = new URL(urlString);
             URLConnection urlConnection = url.openConnection();
@@ -45,7 +45,7 @@ public class InformationRetriever {
         logger.info("Access dummy URL for generation for ISBN {}", isbn);
         this.dummyRead(isbn);
 
-        URL url = new URL("http://www.openisbn.org/download/" + isbn + ".txt");
+        URL url = new URL("http://www.openisbn.com/download/" + isbn + ".txt");
         logger.info("Download real Information for ISBN {} from {}", isbn, url.toString());
         URLConnection urlConnection = url.openConnection();
         BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
